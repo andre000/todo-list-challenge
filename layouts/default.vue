@@ -13,11 +13,11 @@
 </template>
 
 <style lang="scss">
-@import url('@/assets/scss/main.scss');
+@import '@/assets/scss/main.scss';
 
 .page {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
+  min-height: calc(100vh - 1px);
 }
 </style>
