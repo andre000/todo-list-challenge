@@ -2,7 +2,7 @@
   <div class="page">
     <header class="page__header">
       <h1>
-        Header
+        Todo App
       </h1>
     </header>
     <main class="page__main">
