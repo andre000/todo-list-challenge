@@ -54,7 +54,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/toast'
   ],
   /*
   ** Axios module configuration
@@ -71,5 +72,9 @@ export default {
   env: {
     OOTZ_API_KEY: process.env.OOTZ_API_KEY,
     OOTZ_BASE_URL: process.env.OOTZ_BASE_URL
+  },
+
+  toast: {
+    position: 'bottom-center'
   }
 }
