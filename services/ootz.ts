@@ -4,23 +4,23 @@ import axios from 'axios'
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export interface Todo {
-  id: String;
-  frame_id: String;
-  title: String;
-  description: String;
-  created_at?: String;
-  open: Boolean;
-  order: Number;
+  id: string;
+  frame_id: string;
+  title: string;
+  description: string;
+  created_at?: string;
+  open: boolean;
+  order: number;
 }
 
 export interface TodoInput extends Omit<Todo, 'id'|'created_at'> {}
 
 export interface Frame {
-  id: String;
-  title: String;
-  created_at?: String;
-  order: Number;
-  todos: Array<Todo>;
+  id: string;
+  title: string;
+  created_at?: string;
+  order: number;
+  todos?: Array<Todo>;
 }
 
 export interface FrameInput extends Omit<Frame, 'id'> {}
@@ -29,7 +29,7 @@ export interface OotzResponse<T> {
   /**
    * Código de retorno da request, 1 para sucesso, 0 para erro.
    */
-  return_code: Number;
+  return_code: number;
 
   /**
    * JSON com os dados de resposta.
@@ -39,7 +39,7 @@ export interface OotzResponse<T> {
   /**
    * Caso ocorra algum erro (return_code=0) retorna a descrição.
    */
-  messageopcional: String;
+  messageopcional: string;
 }
 
 const apikey = process.env.OOTZ_API_KEY
@@ -53,7 +53,7 @@ const api = axios.create({
 
 export default {
   frame: {
-    url: 'frames',
+    url: 'frame',
     async create (frame: FrameInput): Promise<OotzResponse<Frame>> {
       const response = await api.post(this.url, frame)
       return response.data as OotzResponse<Frame>
@@ -62,22 +62,22 @@ export default {
       const response = await api.put(this.url, frame)
       return response.data as OotzResponse<Frame>
     },
-    async delete (id: String) {
+    async delete (id: string) {
       const response = await api.delete(`${this.url}/${id}`)
       return response.data
     },
     async list (): Promise<OotzResponse<Frame>> {
-      const response = await api.get(this.url)
+      const response = await api.get(`${this.url}s`)
       return response.data as OotzResponse<Frame>
     },
-    async get (id: String): Promise<OotzResponse<Frame>> {
+    async get (id: string): Promise<OotzResponse<Frame>> {
       const response = await api.get(`${this.url}/${id}`)
       return response.data as OotzResponse<Frame>
     }
   },
 
   todo: {
-    url: 'Todo',
+    url: 'todo',
     async create (todo: TodoInput): Promise<OotzResponse<Todo>> {
       const response = await api.post(this.url, todo)
       return response.data as OotzResponse<Todo>
@@ -86,11 +86,11 @@ export default {
       const response = await api.put(this.url, todo)
       return response.data as OotzResponse<Todo>
     },
-    async delete (id: String) {
+    async delete (id: string) {
       const response = await api.delete(`${this.url}/${id}`)
       return response.data
     },
-    async get (id: String): Promise<OotzResponse<Todo>> {
+    async get (id: string): Promise<OotzResponse<Todo>> {
       const response = await api.get(`${this.url}/${id}`)
       return response.data as OotzResponse<Todo>
     }
