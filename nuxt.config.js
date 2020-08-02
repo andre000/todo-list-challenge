@@ -66,5 +66,10 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+  },
+
+  env: {
+    OOTZ_API_KEY: process.env.OOTZ_API_KEY,
+    OOTZ_BASE_URL: process.env.OOTZ_BASE_URL
   }
 }
