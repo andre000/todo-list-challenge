@@ -39,3 +39,12 @@ h2, h3, h4, h5 ,h6, .subtitle {
     --header-color: #ddd;
   }
 }
+
+a, .link {
+  color: $color-red;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+}
