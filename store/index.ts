@@ -1,5 +1,5 @@
 import { Store } from 'vuex'
-import api, { Frame, Todo } from '@/services/ootz'
+import api, { Frame, Todo, FrameInput } from '@/services/ootz'
 
 const mockFrame: Array<Frame> = [
   {
@@ -96,9 +96,18 @@ export const actions = {
     const { data: frames } = await api.frame.list()
     store.commit('UPDATE_FRAME_LIST', frames)
   },
-  async addFrame () {},
-  async editFrame () {},
-  async deleteFrame () {},
+  async addFrame (store: Store<TodoState>, frame: FrameInput) {
+    const { data: frames } = await api.frame.create(frame)
+    store.commit('ADD_FRAME', frames)
+  },
+  async editFrame (store: Store<TodoState>, frame: Frame) {
+    const { data: frames } = await api.frame.update(frame)
+    store.commit('EDIT_FRAME', frames)
+  },
+  async deleteFrame (store: Store<TodoState>, frame: Frame) {
+    await api.frame.delete(frame.id)
+    store.commit('DELETE_FRAME', frame.id)
+  },
 
   async getTodo () {},
   async addTodo () {},
