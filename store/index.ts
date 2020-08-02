@@ -69,7 +69,7 @@ export const mutations = {
   },
   EDIT_FRAME (state: TodoState, frame: Frame) {
     const index = state.frames.findIndex(f => f.id === frame.id)
-    state.frames[index] = frame
+    state.frames.splice(index, 1, frame)
   },
   DELETE_FRAME (state: TodoState, frameId: String) {
     const index = state.frames.findIndex(f => f.id === frameId)
