@@ -9,7 +9,11 @@ import Vue from 'vue'
 
 export default Vue.extend({
   async fetch () {
-    await this.$store.dispatch('listFrame')
+    try {
+      await this.$store.dispatch('listFrame')
+    } catch (err) {
+      this.$toast.error('Sorry! We couldn\'t reach the server. Try again later')
+    }
   },
 
   computed: {
