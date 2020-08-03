@@ -130,7 +130,7 @@ export const actions = {
   },
   async editFrame (store: Store<TodoState>, frame: Frame) {
     const { data: frames } = await api.frame.update(frame)
-    store.commit('EDIT_FRAME', frames)
+    store.commit('EDIT_FRAME', { ...frames, todos: frame.todos })
   },
   async deleteFrame (store: Store<TodoState>, frame: Frame) {
     await api.frame.delete(frame.id)

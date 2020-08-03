@@ -25,9 +25,11 @@
         :key="todo.id"
         :todo="todo"
         :edit-mode="todo.id === editingTodoID"
+        :disabled="todo.id === disabledTodoID"
         @edit="editingTodoID = $event.id"
         @remove="removeTodo"
         @done="changeTodo"
+        @checked="checkTodo"
       />
       <span
         v-if="!newTodo && !editMode"
@@ -149,6 +151,18 @@ export default Vue.extend({
         await this.deleteTodo(todo)
       } catch (err) {
         this.$toast.error('Sorry. Server is currently unavaiable')
+      }
+    },
+
+    async checkTodo (todo: Todo) {
+      this.disabledTodoID = todo.id
+
+      try {
+        await this.editTodo({ ...todo, open: !todo.open })
+      } catch (error) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+      } finally {
+        this.disabledTodoID = ''
       }
     },
 

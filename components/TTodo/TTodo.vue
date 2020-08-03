@@ -1,7 +1,7 @@
 <template>
-  <div class="card" :class="{'card--disabled': disabled}">
+  <div class="card" :class="{'card--disabled': disabled, 'card--checked': !todo.open }">
     <div v-if="!editMode" class="card__status" :class="{ 'card__status--checked': !todo.open }">
-      <div class="card__status__checkbox" />
+      <div class="card__status__checkbox" @click="$emit('checked', todo)" />
     </div>
 
     <div v-if="!editMode" class="card__actions">
@@ -111,6 +111,7 @@ export default Vue.extend({
   &__status {
     flex-basis: 15%;
     &__checkbox {
+      cursor: pointer;
       height: 20px;
       width: 20px;
       border-radius: 100%;
@@ -206,6 +207,12 @@ export default Vue.extend({
   }
 
   &--disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  &--checked {
+    text-decoration: line-through;
     opacity: 0.5;
   }
 
