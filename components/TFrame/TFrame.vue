@@ -20,16 +20,24 @@
     </div>
 
     <div class="frame__body">
-      <t-todo v-for="todo in frame.todos" :key="todo.id" :todo="todo" />
+      <t-todo
+        v-for="todo in frame.todos"
+        :key="todo.id"
+        :todo="todo"
+        :edit-mode="todo.id === editingTodoID"
+        @edit="editingTodoID = $event.id"
+        @remove="removeTodo"
+        @done="changeTodo"
+      />
       <span
-        v-if="!newTodo"
+        v-if="!newTodo && !editMode"
         class="link frame__body__new"
         @click="newTodo = {}"
       >
         + add new task
       </span>
       <t-todo
-        v-else
+        v-else-if="!editMode"
         :todo="newTodo"
         :edit-mode="true"
         :disabled="isLoadingNewTodo"
@@ -121,7 +129,26 @@ export default Vue.extend({
       }
     },
 
-    ...mapActions(['addTodo'])
+    async changeTodo (event: any) {
+      this.editingTodoID = ''
+      if (!event) { return false }
+
+      this.disabledTodoID = event.id
+
+      try {
+        await this.editTodo(event)
+      } catch (error) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+      } finally {
+        this.disabledTodoID = ''
+      }
+    },
+
+    async removeTodo (event: any) {
+
+    },
+
+    ...mapActions(['addTodo', 'editTodo'])
   }
 })
 </script>

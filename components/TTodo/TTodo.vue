@@ -1,12 +1,12 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{'card--disabled': disabled}">
     <div v-if="!editMode" class="card__status" :class="{ 'card__status--checked': !todo.open }">
       <div class="card__status__checkbox" />
     </div>
 
-    <div class="card__actions">
-      <trash-icon size="12" />
-      <edit-icon size="12" />
+    <div v-if="!editMode" class="card__actions">
+      <trash-icon size="12" @click="$emit('remove', todo)" />
+      <edit-icon size="12" @click="$emit('edit', todo)" />
     </div>
 
     <h4 v-if="!editMode" class="card__title">
@@ -35,11 +35,6 @@
     <div v-if="editMode" class="card__edit__actions">
       <span class="link" @click="saveTodo">save</span>
       <span class="link" @click="$emit('done', false)">cancel</span>
-    </div>
-
-    <div class="card__actions">
-      <i class="card__action__edit" />
-      <i class="card__action__close" />
     </div>
   </div>
 </template>
@@ -76,6 +71,15 @@ export default Vue.extend({
     }
   }),
 
+  watch: {
+    editMode () {
+      if (this.todo.title) {
+        this.newTodo.title = this.todo.title
+        this.newTodo.description = this.todo.description
+      }
+    }
+  },
+
   methods: {
     saveTodo () {
       if (this.newTodo.title.trim() === '') {
@@ -87,7 +91,9 @@ export default Vue.extend({
         return false
       }
 
-      this.$emit('done', this.newTodo)
+      const todo = this.todo ? { ...this.todo, ...this.newTodo } : this.newTodo
+
+      this.$emit('done', todo)
     }
   }
 })
@@ -159,6 +165,7 @@ export default Vue.extend({
       width: 100%;
       font-weight: bold;
       outline: none;
+      margin-left: 15%;
     }
   }
 
@@ -196,6 +203,10 @@ export default Vue.extend({
         filter: opacity(0.7);
       }
     }
+  }
+
+  &--disabled {
+    opacity: 0.5;
   }
 
   &:hover {

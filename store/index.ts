@@ -84,6 +84,16 @@ export const mutations = {
       1,
       { ...frame, todos: [...frame.todos as any, todo] }
     )
+  },
+
+  EDIT_TODO (state: TodoState, todo: Todo) {
+    const index = state.frames.findIndex(f => f.id === todo.frame_id)
+    const frame = state.frames[index]
+
+    const indexTodo = (frame.todos as Array<Todo>).findIndex(t => t.id === todo.id)
+    frame.todos?.splice(indexTodo, 1, todo)
+
+    state.frames.splice(index, 1, frame)
   }
 }
 
@@ -124,6 +134,9 @@ export const actions = {
     const { data: savedTodo } = await api.todo.create(todo)
     store.commit('ADD_TODO', savedTodo)
   },
-  async editTodo () {},
+  async editTodo (store: Store<TodoState>, todo: Todo) {
+    const { data: todos } = await api.todo.update(todo)
+    store.commit('EDIT_TODO', todos)
+  },
   async deleteTodo () {}
 }
