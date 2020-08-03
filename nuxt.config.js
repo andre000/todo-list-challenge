@@ -75,6 +75,7 @@ export default {
   },
 
   toast: {
-    position: 'bottom-center'
+    position: 'bottom-center',
+    duration: 5000
   }
 }
