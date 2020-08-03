@@ -1,5 +1,5 @@
 import { Store } from 'vuex'
-import api, { Frame, Todo, FrameInput } from '@/services/ootz'
+import api, { Frame, Todo, FrameInput, TodoInput } from '@/services/ootz'
 
 const mockFrame: Array<Frame> = [
   {
@@ -74,6 +74,16 @@ export const mutations = {
   DELETE_FRAME (state: TodoState, frameId: String) {
     const index = state.frames.findIndex(f => f.id === frameId)
     state.frames.splice(index, 1)
+  },
+
+  ADD_TODO (state: TodoState, todo: Todo) {
+    const index = state.frames.findIndex(f => f.id === todo.frame_id)
+    const frame = state.frames[index]
+    state.frames.splice(
+      index,
+      1,
+      { ...frame, todos: [...frame.todos as any, todo] }
+    )
   }
 }
 
@@ -110,7 +120,10 @@ export const actions = {
   },
 
   async getTodo () {},
-  async addTodo () {},
+  async addTodo (store: Store<TodoState>, todo: TodoInput) {
+    const { data: savedTodo } = await api.todo.create(todo)
+    store.commit('ADD_TODO', savedTodo)
+  },
   async editTodo () {},
   async deleteTodo () {}
 }
