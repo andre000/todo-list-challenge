@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{'card--disabled': disabled, 'card--checked': !todo.open }">
+  <div class="card" :class="{'card--disabled': disabled, 'card--checked': !todo.open && !editMode}">
     <div v-if="!editMode" class="card__status" :class="{ 'card__status--checked': !todo.open }">
       <div class="card__status__checkbox" @click="$emit('checked', todo)" />
     </div>

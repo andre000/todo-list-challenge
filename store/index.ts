@@ -160,5 +160,16 @@ export const actions = {
   async deleteTodo (store: Store<TodoState>, todo: Todo) {
     await api.todo.delete(todo.id)
     store.commit('DELETE_TODO', todo)
+  },
+  async updateTodoOrder (store: Store<TodoState>, frame: Frame) {
+    const newTodoOrder = (frame.todos as Array<Todo>).map((t, i) => ({
+      ...t,
+      order: i
+    }))
+
+    const updateTodos = newTodoOrder.map(t => api.todo.update(t))
+    store.commit('EDIT_FRAME', { ...frame, todos: newTodoOrder })
+
+    await updateTodos
   }
 }

@@ -19,10 +19,17 @@
       <edit-icon size="16" class="frame__actions__edit" @click="$emit('edit')" />
     </div>
 
-    <div class="frame__body">
+    <draggable
+      draggable=".drag"
+      class="frame__body"
+      :data-id="frame.id"
+      :list="frame.todos"
+      @end="handleTodoDrag"
+    >
       <t-todo
         v-for="todo in frame.todos"
         :key="todo.id"
+        class="drag"
         :todo="todo"
         :edit-mode="todo.id === editingTodoID"
         :disabled="todo.id === disabledTodoID"
@@ -45,7 +52,7 @@
         :disabled="isLoadingNewTodo"
         @done="createNewTodo"
       />
-    </div>
+    </draggable>
   </div>
 </template>
 
@@ -166,7 +173,17 @@ export default Vue.extend({
       }
     },
 
-    ...mapActions(['addTodo', 'editTodo', 'deleteTodo'])
+    async handleTodoDrag () {
+      // $0.attributes.getNamedItem('data-id').value
+      try {
+        await this.updateTodoOrder(this.frame)
+      } catch (error) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+        await this.listFrame()
+      }
+    },
+
+    ...mapActions(['addTodo', 'editTodo', 'deleteTodo', 'updateTodoOrder', 'listFrame'])
   }
 })
 </script>
