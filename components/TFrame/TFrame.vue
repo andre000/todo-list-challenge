@@ -97,23 +97,23 @@ export default Vue.extend({
   },
 
   methods: {
-    async createNewTodo (event: any) {
-      if (event === false) {
+    async createNewTodo (todo: Todo) {
+      if (!todo) {
         this.newTodo = null
         return false
       }
 
       this.isLoadingNewTodo = true
-      const todo = [...this.frame.todos] as Array<Todo>
-      const getOrder = todo.length
-        ? (todo.sort((a, b) => a.order > b.order ? 1 : -1).pop() as Todo).order
+      const todos = [...this.frame.todos] as Array<Todo>
+      const getOrder = todos.length
+        ? (todos.sort((a, b) => a.order > b.order ? 1 : -1).pop() as Todo).order
         : 0
 
       const newTodo: TodoInput = {
-        title: event.title,
+        title: todo.title,
         order: (getOrder + 1),
         frame_id: this.frame.id,
-        description: event.description,
+        description: todo.description,
         open: true
       }
 
@@ -129,14 +129,14 @@ export default Vue.extend({
       }
     },
 
-    async changeTodo (event: any) {
+    async changeTodo (todo: Todo) {
       this.editingTodoID = ''
-      if (!event) { return false }
+      if (!todo) { return false }
 
-      this.disabledTodoID = event.id
+      this.disabledTodoID = todo.id
 
       try {
-        await this.editTodo(event)
+        await this.editTodo(todo)
       } catch (error) {
         this.$toast.error('Sorry. Server is currently unavaiable')
       } finally {
@@ -144,11 +144,15 @@ export default Vue.extend({
       }
     },
 
-    async removeTodo (event: any) {
-
+    async removeTodo (todo: Todo) {
+      try {
+        await this.deleteTodo(todo)
+      } catch (err) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+      }
     },
 
-    ...mapActions(['addTodo', 'editTodo'])
+    ...mapActions(['addTodo', 'editTodo', 'deleteTodo'])
   }
 })
 </script>
