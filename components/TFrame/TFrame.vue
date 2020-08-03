@@ -192,7 +192,10 @@ export default Vue.extend({
 
   &__title {
     margin: 10px 0px 20px 0px;
+    cursor: move;
+
     &--edit {
+      cursor: auto;
       font-weight: bold;
       font-size: 1.5em;
       border: none;

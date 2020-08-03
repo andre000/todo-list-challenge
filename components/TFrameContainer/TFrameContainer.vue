@@ -1,8 +1,14 @@
 <template>
-  <div class="frame__container">
+  <draggable
+    :list="frames"
+    class="frame__container"
+    draggable=".drag"
+    @end="handleFrameDrag"
+  >
     <t-frame
       v-for="frame in frames"
       :key="frame.id"
+      class="drag"
       :frame="frame"
       :edit-mode="frame.id === editFrameID"
       :disabled="frame.id === disabledFrameID"
@@ -24,7 +30,7 @@
       :edit-mode="true"
       @done="createNewFrame"
     />
-  </div>
+  </draggable>
 </template>
 
 <script lang="ts">
@@ -104,7 +110,16 @@ export default Vue.extend({
       }
     },
 
-    ...mapActions(['addFrame', 'deleteFrame', 'editFrame'])
+    async handleFrameDrag () {
+      try {
+        await this.updateFrameOrder(this.frames)
+      } catch (error) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+        await this.listFrame()
+      }
+    },
+
+    ...mapActions(['addFrame', 'deleteFrame', 'editFrame', 'updateFrameOrder', 'listFrame'])
   }
 })
 </script>
@@ -112,5 +127,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .frame__container {
   display: flex;
+
+  &__new {
+    margin-left: 12px;
+  }
 }
 </style>

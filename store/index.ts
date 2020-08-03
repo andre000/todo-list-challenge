@@ -136,6 +136,17 @@ export const actions = {
     await api.frame.delete(frame.id)
     store.commit('DELETE_FRAME', frame.id)
   },
+  async updateFrameOrder (store: Store<TodoState>, frames: Array<Frame>) {
+    const newFramesOrder = frames.map((f, i) => ({
+      ...f,
+      order: i
+    }))
+
+    const updateFrames = newFramesOrder.map(f => api.frame.update(f))
+    store.commit('UPDATE_FRAME_LIST', newFramesOrder)
+
+    await updateFrames
+  },
 
   async getTodo () {},
   async addTodo (store: Store<TodoState>, todo: TodoInput) {
