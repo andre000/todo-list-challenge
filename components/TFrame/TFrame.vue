@@ -21,14 +21,30 @@
 
     <div class="frame__body">
       <t-todo v-for="todo in frame.todos" :key="todo.id" :todo="todo" />
+      <span
+        v-if="!newTodo"
+        class="link frame__body__new"
+        @click="newTodo = {}"
+      >
+        + add new task
+      </span>
+      <t-todo
+        v-else
+        :todo="newTodo"
+        :edit-mode="true"
+        :disabled="isLoadingNewTodo"
+        @done="createNewTodo"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { mapActions } from 'vuex'
 import { TrashIcon, EditIcon } from 'vue-feather-icons'
 import { FullFrame } from '../../store'
+import { TodoInput, Todo } from '../../services/ootz'
 
 export default Vue.extend({
   components: {
@@ -51,10 +67,17 @@ export default Vue.extend({
     }
   },
 
+  data: () => ({
+    newTodo: null as any,
+    isLoadingNewTodo: false,
+    editingTodoID: '',
+    disabledTodoID: ''
+  }),
+
   watch: {
     editMode () {
       this.$nextTick().then(() =>
-        (this.$refs.frame_edit as HTMLInputElement).focus()
+        this.$refs.frame_edit && (this.$refs.frame_edit as HTMLInputElement).focus()
       )
     }
   },
@@ -63,6 +86,42 @@ export default Vue.extend({
     if (this.editMode) {
       (this.$refs.frame_edit as HTMLInputElement).focus()
     }
+  },
+
+  methods: {
+    async createNewTodo (event: any) {
+      if (event === false) {
+        this.newTodo = null
+        return false
+      }
+
+      this.isLoadingNewTodo = true
+      const todo = [...this.frame.todos] as Array<Todo>
+      const getOrder = todo.length
+        ? (todo.sort((a, b) => a.order > b.order ? 1 : -1).pop() as Todo).order
+        : 0
+
+      const newTodo: TodoInput = {
+        title: event.title,
+        order: (getOrder + 1),
+        frame_id: this.frame.id,
+        description: event.description,
+        open: true
+      }
+
+      this.newTodo = newTodo
+
+      try {
+        await this.addTodo(newTodo)
+      } catch (error) {
+        this.$toast.error('Sorry. Server is currently unavaiable')
+      } finally {
+        this.isLoadingNewTodo = false
+        this.newTodo = null
+      }
+    },
+
+    ...mapActions(['addTodo'])
   }
 })
 </script>
@@ -95,6 +154,15 @@ export default Vue.extend({
       outline: none;
       width: 100%;
       background: none;
+    }
+  }
+
+  &__body {
+    &__new {
+      color: $color-blue;
+      .dark & {
+        filter: opacity(0.5) brightness(2);
+      }
     }
   }
 
