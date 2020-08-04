@@ -6,5 +6,15 @@
       "use": "@nuxtjs/now-builder",
       "config": {}
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "OOTZ_API_KEY": "@OOTZ_API_KEY",
+      "OOTZ_BASE_URL": "@OOTZ_BASE_URL"
+    }
+  },
+  "env": {
+    "OOTZ_API_KEY": "@OOTZ_API_KEY",
+    "OOTZ_BASE_URL": "@OOTZ_BASE_URL"
+  }
 }
