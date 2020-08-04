@@ -27,7 +27,8 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/toast",
-      "@types/vue-feather-icons"
+      "@types/vue-feather-icons",
+      "@types/jest"
     ]
   },
   "exclude": [
