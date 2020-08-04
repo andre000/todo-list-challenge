@@ -9,12 +9,12 @@
   ],
   "build": {
     "env": {
-      "OOTZ_API_KEY": "@OOTZ_API_KEY",
-      "OOTZ_BASE_URL": "@OOTZ_BASE_URL"
+      "OOTZ_API_KEY": "F9CEFF3E3255512FAB58355CFB15E4074E2676210B4D42E24D6C7991BB1BB34A",
+      "OOTZ_BASE_URL": "http://api.todo.ootz.com.br"
     }
   },
   "env": {
-    "OOTZ_API_KEY": "@OOTZ_API_KEY",
-    "OOTZ_BASE_URL": "@OOTZ_BASE_URL"
+    "OOTZ_API_KEY": "F9CEFF3E3255512FAB58355CFB15E4074E2676210B4D42E24D6C7991BB1BB34A",
+    "OOTZ_BASE_URL": "http://api.todo.ootz.com.br"
   }
 }
