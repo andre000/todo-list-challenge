@@ -135,7 +135,7 @@ export default Vue.extend({
     &--checked {
       .card__status {
         &__checkbox {
-          --border: 1px solid $color-dark-blue;
+          --border: 1px solid #{$color-dark-blue};
           border: var(--border);
 
           &::before {

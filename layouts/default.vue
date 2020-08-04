@@ -28,6 +28,10 @@
     padding: 5vh 15vw;
   }
 
+  &__main {
+    overflow-x: auto;
+  }
+
   &__footer {
     text-align: center;
     a {

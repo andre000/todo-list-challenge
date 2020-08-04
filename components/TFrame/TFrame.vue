@@ -230,6 +230,7 @@ export default Vue.extend({
   border-radius: $border-radius;
   padding: $padding;
   width: 20vw;
+  flex-shrink: 0;
   position: relative;
   box-sizing: border-box;
 
