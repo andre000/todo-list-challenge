@@ -51,26 +51,15 @@ export interface FullFrame extends Frame {
   todos: Array<Todo>
 }
 
-export enum TodoThemes {
-  Light = 'light',
-  Dark = 'dark'
-}
-
 export interface TodoState {
-  theme: TodoThemes;
   frames: Array<Frame|never>;
 }
 
 export const state = () => ({
-  theme: 'light',
   frames: [...mockFrame]
 } as TodoState)
 
 export const mutations = {
-  CHANGE_THEME (state: TodoState, theme: TodoThemes) {
-    state.theme = theme
-  },
-
   UPDATE_FRAME_LIST (state: TodoState, frames: Array<Frame>) {
     state.frames = frames
   },

@@ -4,7 +4,9 @@
       <h1>
         Todo App
       </h1>
-      <t-theme-switch v-model="theme" class="page__header__theme" />
+      <client-only>
+        <t-theme-switch v-model="theme" class="page__header__theme" />
+      </client-only>
     </header>
     <main class="page__main">
       <Nuxt />
@@ -23,12 +25,18 @@ export default Vue.extend({
   computed: {
     theme: {
       get () {
-        return this.$store.state.theme
+        return this.$store.state.localStorage.theme
       },
       set (theme: TodoState) {
-        this.$store.commit('CHANGE_THEME', theme)
+        this.$store.commit('localStorage/CHANGE_THEME', theme)
         this.setTheme()
       }
+    }
+  },
+
+  created () {
+    if (process.client) {
+      this.setTheme()
     }
   },
 
