@@ -231,6 +231,7 @@ export default Vue.extend({
   padding: $padding;
   width: 15vw;
   position: relative;
+  box-sizing: border-box;
 
   margin: 0px 12px;
   &:first-child {
@@ -238,6 +239,15 @@ export default Vue.extend({
   }
   &:last-child {
     margin-right: 0px;
+  }
+
+  @media #{$screen-md} {
+    width: 25vw;
+  }
+
+  @media #{$screen-sm-below} {
+    margin: 10px 0px;
+    width: 100%;
   }
 
   &__title {

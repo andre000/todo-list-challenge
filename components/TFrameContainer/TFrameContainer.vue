@@ -125,8 +125,14 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables.scss';
+
 .frame__container {
   display: flex;
+
+  @media #{$screen-sm-below} {
+    flex-direction: column;
+  }
 
   &__new {
     margin-left: 12px;

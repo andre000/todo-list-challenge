@@ -16,12 +16,17 @@
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+@import '@/assets/scss/variables.scss';
 
 .page {
   display: grid;
   grid-template-rows: auto 1fr auto;
   min-height: calc(100vh - 1px - 10vh);
   padding: 5vh 15vw;
+
+  @media #{$screen-md-below} {
+    padding: 5vh 15vw;
+  }
 
   &__footer {
     text-align: center;
