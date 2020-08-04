@@ -51,8 +51,17 @@ body.dark {
       }
     }
 
+    &__title {
+      &--edit::placeholder {
+        color: #fffa;
+      }
+    }
+
     &__body {
       --color: #fffa;
+      &--edit::placeholder {
+        color: #fffa;
+      }
     }
   }
 }

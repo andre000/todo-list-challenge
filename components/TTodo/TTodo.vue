@@ -166,6 +166,7 @@ export default Vue.extend({
     color: var(--color);
 
     &--edit {
+      color: var(--color);
       width: 100%;
       outline: none;
       background: none;

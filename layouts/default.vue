@@ -4,6 +4,7 @@
       <h1>
         Todo App
       </h1>
+      <t-theme-switch v-model="theme" class="page__header__theme" />
     </header>
     <main class="page__main">
       <Nuxt />
@@ -13,6 +14,33 @@
     </footer>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { TodoState } from '../store'
+
+export default Vue.extend({
+  computed: {
+    theme: {
+      get () {
+        return this.$store.state.theme
+      },
+      set (theme: TodoState) {
+        this.$store.commit('CHANGE_THEME', theme)
+        this.setTheme()
+      }
+    }
+  },
+
+  methods: {
+    setTheme () {
+      this.theme === 'dark'
+        ? document.body.classList.add('dark')
+        : document.body.classList.remove('dark')
+    }
+  }
+})
+</script>
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
@@ -26,6 +54,12 @@
 
   @media #{$screen-md-below} {
     padding: 5vh 15vw;
+  }
+
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__main {

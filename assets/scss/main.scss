@@ -7,6 +7,10 @@
   --background-color: #{$color-yellow};
 }
 
+body * {
+  transition: color .25s, background-color .25s;
+}
+
 body {
   font-family: $--font-family-body;
   color: #444;
