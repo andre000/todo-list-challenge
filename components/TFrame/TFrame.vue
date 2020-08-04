@@ -229,7 +229,7 @@ export default Vue.extend({
   background: var(--background-color);
   border-radius: $border-radius;
   padding: $padding;
-  width: 15vw;
+  width: 20vw;
   position: relative;
   box-sizing: border-box;
 
@@ -268,9 +268,6 @@ export default Vue.extend({
   &__body {
     &__new {
       color: $color-blue;
-      .dark & {
-        filter: opacity(0.5) brightness(2);
-      }
     }
   }
 
@@ -288,19 +285,11 @@ export default Vue.extend({
         filter: brightness(1.5);
       }
     }
-
-    .dark & {
-      --color: #{$color-dark-blue};
-    }
   }
 
   &--disabled {
     filter: grayscale(1) opacity(0.5);
     cursor: wait;
-  }
-
-  .dark & {
-    --background-color: #{$color-blue};
   }
 }
 </style>

@@ -1,0 +1,58 @@
+@import '@/assets/scss/variables.scss';
+
+body.dark {
+  --background-color: #{$color-dark-blue};
+  --font-color: #ddd;
+
+  h1, .title {
+    --header-color: #fff;
+  }
+
+  h2, h3, h4, h5 ,h6, .subtitle {
+    --header-color: #ddd;
+  }
+
+  .page {
+    --color: #fff5;
+  }
+
+  .frame {
+    --background-color: #{$color-blue};
+
+    &__body {
+      &__new {
+        filter: opacity(0.5) brightness(2);
+      }
+    }
+
+    &__actions {
+      --color: #{$color-dark-blue};
+    }
+  }
+
+  .card {
+    &__status {
+      &__checkbox {
+       --border: 1px #{$color-dark-blue} solid;
+        &::before {
+          --background-color: #{$color-dark-blue};
+        }
+      }
+
+      &--checked {
+       .card__status {
+          &__checkbox {
+            --border: 1px solid #fff;
+            &::before {
+              --background-color: #fff;
+            }
+          }
+       }
+      }
+    }
+
+    &__body {
+      --color: #fffa;
+    }
+  }
+}

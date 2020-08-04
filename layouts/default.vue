@@ -31,14 +31,12 @@
   &__footer {
     text-align: center;
     a {
+      --color: #888a;
       text-decoration: none;
       font-size: 11px;
-      color: #888a;
+      color: var(--color);
       &:hover {
         text-decoration: underline;
-      }
-      .dark & {
-        color: #fff5;
       }
     }
   }

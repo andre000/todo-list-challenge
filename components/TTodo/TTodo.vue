@@ -111,46 +111,35 @@ export default Vue.extend({
   &__status {
     flex-basis: 15%;
     &__checkbox {
+      --border: 1px #ddd solid;
       cursor: pointer;
       height: 20px;
       width: 20px;
       border-radius: 100%;
       display: inline-block;
-      border: 1px #ddd solid;
-
-      .dark & {
-        border: 1px $color-dark-blue solid;
-      }
+      border: var(--border);
 
       &::before {
+        --background-color: #eee;
         margin: 3px;
         content: '';
         display: block;
-        background: #eee;
+        background: var(--background-color);
         height: 14px;
         width: 14px;
         border-radius: 100%;
         opacity: 0.7;
-
-        .dark & {
-          background: $color-dark-blue;
-        }
       }
     }
 
     &--checked {
       .card__status {
         &__checkbox {
-          border: 1px solid $color-dark-blue;
-          .dark & {
-            border: 1px solid #fff;
-          }
+          --border: 1px solid $color-dark-blue;
+          border: var(--border);
 
           &::before {
-            background: $color-dark-blue;
-            .dark & {
-              background: #fff;
-            }
+            --background-color: #{$color-dark-blue};
           }
         }
       }
@@ -171,9 +160,10 @@ export default Vue.extend({
   }
 
   &__body {
+    --color: #aaa;
     flex-basis: 100%;
     margin-left: 15%;
-    color: #aaa;
+    color: var(--color);
 
     &--edit {
       width: 100%;
@@ -181,10 +171,6 @@ export default Vue.extend({
       background: none;
       border: none;
       resize: none;
-    }
-
-    .dark & {
-      color: #fffa;
     }
   }
 
