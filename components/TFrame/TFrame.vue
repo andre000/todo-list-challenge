@@ -24,11 +24,13 @@
       class="frame__body"
       :data-id="frame.id"
       :list="frame.todos"
+      group="frames"
       @end="handleTodoDrag"
     >
       <t-todo
         v-for="todo in frame.todos"
         :key="todo.id"
+        :data-id="frame.id"
         class="drag"
         :todo="todo"
         :edit-mode="todo.id === editingTodoID"
@@ -38,27 +40,27 @@
         @done="changeTodo"
         @checked="checkTodo"
       />
-      <span
-        v-if="!newTodo && !editMode"
-        class="link frame__body__new"
-        @click="newTodo = {}"
-      >
-        + add new task
-      </span>
-      <t-todo
-        v-else-if="!editMode"
-        :todo="newTodo"
-        :edit-mode="true"
-        :disabled="isLoadingNewTodo"
-        @done="createNewTodo"
-      />
     </draggable>
+    <span
+      v-if="!newTodo && !editMode"
+      class="link frame__body__new"
+      @click="newTodo = {}"
+    >
+      + add new task
+    </span>
+    <t-todo
+      v-else-if="!editMode"
+      :todo="newTodo"
+      :edit-mode="true"
+      :disabled="isLoadingNewTodo"
+      @done="createNewTodo"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { TrashIcon, EditIcon } from 'vue-feather-icons'
 import { FullFrame } from '../../store'
 import { TodoInput, Todo } from '../../services/ootz'
@@ -90,6 +92,10 @@ export default Vue.extend({
     editingTodoID: '',
     disabledTodoID: ''
   }),
+
+  computed: {
+    ...mapGetters(['fullFrames'])
+  },
 
   watch: {
     editMode () {
@@ -173,8 +179,35 @@ export default Vue.extend({
       }
     },
 
-    async handleTodoDrag () {
-      // $0.attributes.getNamedItem('data-id').value
+    async handleTodoDrag (event: any) {
+      const oldFrameID = event.from.attributes.getNamedItem('data-id').value
+      const newFrameID = event.to.attributes.getNamedItem('data-id').value
+
+      const isChangingFrames = oldFrameID !== newFrameID
+
+      if (isChangingFrames) {
+        const oldFrame = (this.fullFrames as Array<FullFrame>).find(f => f.id === oldFrameID)
+        const newFrame = (this.fullFrames as Array<FullFrame>).find(f => f.id === newFrameID)
+        const transferedTodo = newFrame?.todos.find(t => t.frame_id !== newFrame.id)
+
+        await Promise.all([
+          this.editFrame(oldFrame),
+          this.editFrame(newFrame)
+        ])
+
+        await this.editTodo({
+          ...transferedTodo,
+          frame_id: newFrame?.id
+        })
+
+        await Promise.all([
+          this.updateTodoOrder(oldFrame),
+          this.updateTodoOrder(newFrame)
+        ])
+
+        return false
+      }
+
       try {
         await this.updateTodoOrder(this.frame)
       } catch (error) {
@@ -183,7 +216,7 @@ export default Vue.extend({
       }
     },
 
-    ...mapActions(['addTodo', 'editTodo', 'deleteTodo', 'updateTodoOrder', 'listFrame'])
+    ...mapActions(['addTodo', 'editTodo', 'deleteTodo', 'updateTodoOrder', 'listFrame', 'editFrame'])
   }
 })
 </script>
