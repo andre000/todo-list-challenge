@@ -71,11 +71,6 @@ export default {
   build: {
   },
 
-  env: {
-    OOTZ_API_KEY: process.env.OOTZ_API_KEY,
-    OOTZ_BASE_URL: process.env.OOTZ_BASE_URL
-  },
-
   toast: {
     position: 'bottom-center',
     duration: 5000

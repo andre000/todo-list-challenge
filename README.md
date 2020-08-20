@@ -19,10 +19,6 @@ It uses the following packages:
 - [Normalize.css](https://necolas.github.io/normalize.css/)
 - [axios](https://github.com/axios/axios)
 
-## Requirements
-
-Before running this project, you must copy the `.env.test` file, rename it to `.env` and fill the variables.
-
 ## Install
 
 ```sh
