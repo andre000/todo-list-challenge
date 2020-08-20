@@ -1,51 +1,5 @@
 import { Store } from 'vuex'
-import api, { Frame, Todo, FrameInput, TodoInput } from '@/services/ootz'
-
-const mockFrame: Array<Frame> = [
-  {
-    id: 'abc1',
-    title: 'Frame 1',
-    created_at: '2020-01-01 12:50:01',
-    order: 1,
-    todos: [
-      {
-        id: 'cdb1',
-        frame_id: 'abc1',
-        title: 'TODO',
-        description: 'Todo 1',
-        open: true,
-        order: 1,
-        created_at: '2020-01-01 12:50:01'
-      },
-      {
-        id: 'cdb2',
-        frame_id: 'abc1',
-        title: 'TODO',
-        description: 'Todo 2',
-        open: true,
-        order: 2,
-        created_at: '2020-01-01 12:50:01'
-      }
-    ]
-  },
-  {
-    id: 'abc2',
-    title: 'Frame 2',
-    created_at: '2020-01-01 12:50:01',
-    order: 2,
-    todos: [
-      {
-        id: 'cdb3',
-        frame_id: 'abc2',
-        title: 'TODO',
-        description: 'Todo 3',
-        open: true,
-        order: 2,
-        created_at: '2020-01-01 12:50:01'
-      }
-    ]
-  }
-]
+import { Frame, Todo, FrameInput, TodoInput } from '@/services/ootz'
 
 export interface FullFrame extends Frame {
   todos: Array<Todo>
@@ -56,7 +10,7 @@ export interface TodoState {
 }
 
 export const state = () => ({
-  frames: [...mockFrame]
+  frames: []
 } as TodoState)
 
 export const mutations = {
@@ -64,7 +18,7 @@ export const mutations = {
     state.frames = frames
   },
   ADD_FRAME (state: TodoState, frame: Frame) {
-    state.frames.push(frame)
+    state.frames.push({ ...frame, todos: [] })
   },
   EDIT_FRAME (state: TodoState, frame: Frame) {
     const index = state.frames.findIndex(f => f.id === frame.id)
@@ -119,56 +73,42 @@ export const getters = {
 
 export const actions = {
   async getFrame () {},
-  async listFrame (store: Store<TodoState>) {
-    const { data: frames } = await api.frame.list()
-    store.commit('UPDATE_FRAME_LIST', frames)
+  listFrame (store: Store<TodoState>) {
+    store.commit('UPDATE_FRAME_LIST', store.state.frames)
   },
-  async addFrame (store: Store<TodoState>, frame: FrameInput) {
-    const { data: frames } = await api.frame.create(frame)
-    store.commit('ADD_FRAME', frames)
+  addFrame (store: Store<TodoState>, frame: FrameInput) {
+    store.commit('ADD_FRAME', { id: `${Number(Math.random() * 1000).toFixed(0)}`, ...frame })
   },
-  async editFrame (store: Store<TodoState>, frame: Frame) {
-    const { data: frames } = await api.frame.update(frame)
-    store.commit('EDIT_FRAME', { ...frames, todos: frame.todos })
+  editFrame (store: Store<TodoState>, frame: Frame) {
+    store.commit('EDIT_FRAME', { ...frame, todos: frame.todos })
   },
-  async deleteFrame (store: Store<TodoState>, frame: Frame) {
-    await api.frame.delete(frame.id)
+  deleteFrame (store: Store<TodoState>, frame: Frame) {
     store.commit('DELETE_FRAME', frame.id)
   },
-  async updateFrameOrder (store: Store<TodoState>, frames: Array<Frame>) {
+  updateFrameOrder (store: Store<TodoState>, frames: Array<Frame>) {
     const newFramesOrder = frames.map((f, i) => ({
       ...f,
       order: i
     }))
 
-    const updateFrames = newFramesOrder.map(f => api.frame.update(f))
     store.commit('UPDATE_FRAME_LIST', newFramesOrder)
-
-    await updateFrames
   },
 
-  async getTodo () {},
-  async addTodo (store: Store<TodoState>, todo: TodoInput) {
-    const { data: savedTodo } = await api.todo.create(todo)
-    store.commit('ADD_TODO', savedTodo)
+  addTodo (store: Store<TodoState>, todo: TodoInput) {
+    store.commit('ADD_TODO', { id: `${Number(Math.random() * 1000).toFixed(0)}`, ...todo })
   },
-  async editTodo (store: Store<TodoState>, todo: Todo) {
-    const { data: todos } = await api.todo.update(todo)
-    store.commit('EDIT_TODO', todos)
+  editTodo (store: Store<TodoState>, todo: Todo) {
+    store.commit('EDIT_TODO', todo)
   },
-  async deleteTodo (store: Store<TodoState>, todo: Todo) {
-    await api.todo.delete(todo.id)
+  deleteTodo (store: Store<TodoState>, todo: Todo) {
     store.commit('DELETE_TODO', todo)
   },
-  async updateTodoOrder (store: Store<TodoState>, frame: Frame) {
+  updateTodoOrder (store: Store<TodoState>, frame: Frame) {
     const newTodoOrder = (frame.todos as Array<Todo>).map((t, i) => ({
       ...t,
       order: i
     }))
 
-    const updateTodos = newTodoOrder.map(t => api.todo.update(t))
     store.commit('EDIT_FRAME', { ...frame, todos: newTodoOrder })
-
-    await updateTodos
   }
 }
