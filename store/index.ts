@@ -64,9 +64,11 @@ export const getters = {
 
     return state.frames.map(f => ({
       ...f,
-      todos: f.todos ? f.todos
+      todos: f.todos
+? f.todos
         .filter(t => t.frame_id === f.id)
-        .sort(sortByOrder) : []
+        .sort(sortByOrder)
+: []
     })).sort(sortByOrder)
   }
 }
